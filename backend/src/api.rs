@@ -87,13 +87,13 @@ pub fn create_router(state: Arc<AppState>) -> Router {
     // User routes requiring signature verification
     let user_routes = Router::new()
         .route("/api/plans", post(create_plan))
-        .route("/api/plans/ping", post(ping_plan))
         .route("/api/plans/payout", post(trigger_payout))
         .route_layer(from_fn(signature_auth_middleware));
 
     // Public or admin routes
     let public_routes = Router::new()
         .route("/api/plans", get(get_plans))
+        .route("/api/plans/ping", post(ping_plan))
         .route("/api/anchor/payout-status", get(get_anchor_payouts))
         .route("/api/kyc/webhook", post(kyc_webhook_handler))
         .route("/ws/kyc", get(ws_handler));
